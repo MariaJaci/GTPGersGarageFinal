@@ -6,7 +6,7 @@ const asyncHandler = require('../middleware/async');
 // Staff object can call methods, create, find, etc
 const Staff = require('../models/Staff');
 
-//Controller methods separate from the routers so it can be neater, using Express Middleware
+//Controller methods separate from the routes so it can be neater, using Express Middleware
 
 // @desc  Fetch all staff
 // @route GET/api/v1/staff

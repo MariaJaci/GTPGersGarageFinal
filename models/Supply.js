@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 
-const SuppliesSchema = new mongoose.Shema({
+const SupplySchema = new mongoose.Schema({
   productName: {
     type: String,
     trim: true, // removes whitespace from both sides
     required: [true, 'Please, enter the product name'],
+    unique: true,
   },
   productPrice: {
     type: Number,
@@ -12,4 +13,4 @@ const SuppliesSchema = new mongoose.Shema({
   },
 });
 
-module.exports = mongoose.model('Supplies', SuppliesSchema);
+module.exports = mongoose.model('Supply', SupplySchema);

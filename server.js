@@ -19,7 +19,7 @@ connectDB();
 
 // Route files
 const staff = require('./routes/staff');
-//const supplies = require('./routes/supplies'); IT CRASHES WHEN I CALL
+const supplies = require('./routes/supplies');
 
 const app = express();
 
@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === 'development') {
 
 //Mount routers
 app.use('/api/v1/staff', staff);
-//app.use('/api/v1/supplies', supplies); IT CRASHES WHEN I CALL
+app.use('/api/v1/supplies', supplies);
 
 app.use(errorHandler);
 
