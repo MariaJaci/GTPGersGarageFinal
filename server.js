@@ -20,6 +20,7 @@ connectDB();
 // Route files
 const staff = require('./routes/staff');
 const supplies = require('./routes/supplies');
+const auth = require('./routes/auth');
 
 const app = express();
 
@@ -34,6 +35,7 @@ if (process.env.NODE_ENV === 'development') {
 //Mount routers
 app.use('/api/v1/staff', staff);
 app.use('/api/v1/supplies', supplies);
+app.use('/api/v1/auth', auth);
 
 app.use(errorHandler);
 
