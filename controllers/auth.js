@@ -4,12 +4,12 @@ const ErrorResponse = require('../utils/errorResponse');
 // bring in the async handler class
 const asyncHandler = require('../middleware/async');
 // bring in the model
-// User object can call methods, create, find, etc
+// User object can call methods, register, etc
 const User = require('../models/User');
 
 // @desc  Register user
-// @route GET/api/v1/auth/register
-// @access Public (don not need a token)
+// @route POST/api/v1/auth/register
+// @access Public
 exports.register = asyncHandler(async (req, res, next) => {
   // add register functionality to the controller method and send data in the body when make the post request
   const {
@@ -22,7 +22,7 @@ exports.register = asyncHandler(async (req, res, next) => {
     vehicleLicense,
   } = req.body;
 
-  // Create user
+  // Create user. already have validation in the model
   const user = await User.create({
     name,
     email,
@@ -32,5 +32,35 @@ exports.register = asyncHandler(async (req, res, next) => {
     vehicleEngine,
     vehicleLicense,
   });
-  res.status(200).json({ success: true });
+  // Create token
+  const token = user.getSignedJwtToken();
+
+  res.status(200).json({ success: true, token });
+});
+
+// @desc  Login user
+// @route POST/api/v1/auth/login
+// @access Public
+exports.login = asyncHandler(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  // Validate email and password
+  if (!email || !password) {
+    return next(new ErrorResponse('Please enter your email and password', 400));
+  }
+  // Check for user email comes from the body and check if it matches in the database and also checks for the password
+  const user = await User.findOne({ email }).select('+password');
+  // make sure user exists
+  if (!user) {
+    return next(new ErrorResponse('Invalid credentials ', 401)); //401 unauthorized
+  }
+  //Check if password matches
+  const isMatch = await user.matchPassword(password);
+  if (!isMatch) {
+    return next(new ErrorResponse('Invalid credentials ', 401)); //401 unauthorized
+  }
+  // Create token and keep going if everything matches
+  const token = user.getSignedJwtToken();
+
+  res.status(200).json({ success: true, token });
 });

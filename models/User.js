@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -29,7 +30,10 @@ const UserSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-    maxlength: [12, 'Please number cannot be more than 12 characters long'],
+    maxlength: [
+      12,
+      'Please phone number cannot be more than 12 characters long',
+    ],
     required: [true, 'Please enter your phone number'],
     unique: true,
   },
@@ -54,5 +58,18 @@ UserSchema.pre('save', async function (next) {
   //hash the password with salt
   this.password = await bcrypt.hash(this.password, salt);
 });
+
+// Sign JWT and return with mongoose method
+UserSchema.methods.getSignedJwtToken = function () {
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE,
+  });
+};
+
+// Match user entered password to hashed password in the database using bcrypt with the method called compare
+UserSchema.methods.matchPassword = async function (enteredPassword) {
+  // takes in the plain password and then check if it matches the encrypted password in the database
+  return await bcrypt.compare(enteredPassword, this.password);
+};
 
 module.exports = mongoose.model('User', UserSchema);
