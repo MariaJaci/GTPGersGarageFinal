@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Welcome to the best garage in town!" />
+    <meta name="keywords" content="garage, small garage, cheap garage." />
+    <link rel="stylesheet" href="css/utilities.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- font awesome link for icons-->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+      integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP"
+      crossorigin="anonymous"
+    />
+    <!--Linking the server api with the fronted-->
+    <!-- <script src="fetch.js" defer></script> -->
+
+
+    <title>Welcome to Ger's Garage!</title>
+  </head>
+  <body id="home">
+    <header class="hero">
+      <div id="navbar" class="navbar">
+        <h1 class="logo">
+          <span class="text-primary"><i class="fas fa-car-side"></i>Ger's</span>
+          Garage
+        </h1>
+        <nav>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#login">Login</a></li>
+            <li><a href="#register">Register</a></li>
+            <li><a href="#booking">Booking</a></li>
+            <li><a href="#supplies">Supplies</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="content">
+        <h1>Welcome to Ger's Garage</h1>
+        <p>We provide car services</p>
+        <a href="#about" class="btn"
+          ><i class="fas fa-chevron-right"></i> Read more</a
+        >
+      </div>
+    </header>
+
+    <main>
+      <section id="about" class="icons bg-light">
+        <div class="flex-items">
+          <div>
+            <i class="fas fa-globe-europe fa-2x"></i>
+            <div>
+              <h3>Great Location</h3>
+              <p>
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sit,
+                illo.
+              </p>
+            </div>
+          </div>
+          <div>
+            <i class="fas fa-binoculars fa-2x"></i>
+            <div>
+              <h3>Free Check-up</h3>
+              <p>
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sit,
+                illo.
+              </p>
+            </div>
+          </div>
+          <div>
+            <i class="fas fa-tools fa-2x"></i>
+            <div>
+              <h3>Supplies</h3>
+              <p>
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sit,
+                illo.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="solutions flex-columns">
+        <div class="row">
+          <div class="column">
+            <div class="column-1">
+              <img src="./images/bw.jpg" alt="black&white car" />
+            </div>
+          </div>
+          <div class="column">
+            <div class="column-2 bg-primary">
+              <h4>When all started</h4>
+              <h2>Our history</h2>
+              <p>
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                Tenetur ab praesentium, doloremque voluptas, voluptate optio
+                dolores ad, dolorum animi aut error blanditiis exercitationem
+                alias quae in. Nulla repellat dolores numquam.
+              </p>
+              <a href="#" class="btn btn-outline">
+                <i class="fas fa-chevron-right"></i>
+                Read more
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="login" class="login flex-columns">
+        <div class="row">
+          <div class="column">
+            <div class="column-1">
+              <img src="./images/golden.jpg" alt="man fixing a car" />
+            </div>
+          </div>
+          <div class="column">
+            <h2>Please, enter your email and password in order to login.</h2>
+            <div class="column-2 bg-light">
+
+              <form enctype="application/json" action="/api/v1/auth/login" method="post" class="login-form" id="loginForm">
+                <div class="form-control">
+                 <input type="text" name="email" id="email" placeholder="Enter your email" />
+                </div>
+                <div class="form-control">
+                  <input type="text" name="password" id="password" placeholder="Enter your password" />
+                </div>
+                <button type="submit" id="submit" class="btn" />Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="register" class="register flex-columns">
+      <!--  <div class="row">
+          <div class="column">
+            <div class="column-1">
+              <img src="./images/speedometer.jpg" alt="speedometer" />
+            </div>
+          </div> CHECK IF I WANT THIS LATER-->
+          <div class="column">
+            <h2>Please, provide your details in order to register.<h2>
+            <div class="column-2 bg-light">
+              <!-- <form action="" class="register-form">
+                <div class="form-control">
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    placeholder="Enter name"
+                  />
+                </div>
+                <div class="form-control">
+                  <input
+                    type="text"
+                    name="email"
+                    id="email"
+                    placeholder="Enter email"
+                  />
+                </div>
+                <div class="form-control">
+                  <input
+                    type="text"
+                    name="phone"
+                    id="phone"
+                    placeholder="Enter phone"
+                  />
+                </div>
+                <div class="form-control">
+                  <input
+                    type="text"
+                    name="vehicle make"
+                    id="vehicle make"
+                    placeholder="Enter vehicle make"
+                  />
+                  <div class="form-control">
+                    <input
+                      type="text"
+                      name="vehicle license"
+                      id="vehicle license"
+                      placeholder="Enter vehicle license"
+                    />
+                    <div class="form-control">
+                      <input
+                        type="text"
+                        name="vehicle engine"
+                        id="vehicle engine"
+                        placeholder="Enter vehicle engine"
+                      />
+                      <div class="form-control">
+                  <input type="text" id="message" name="message"
+                    placeholder="Type your message"/>
+                  
+                  </div>
+                <input type="submit" value="Register" id="submit" class="btn" />
+              </form> -->
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer bg-dark">
+      <div class="social">
+        <a href=""><i class="fab fa-facebook fa-2x"></i></a>
+        <a href=""><i class="fab fa-twitter fa-2x"></i></a>
+        <a href=""><i class="fab fa-youtube fa-2x"></i></a>
+      </div>
+      <p>Copyright &copy; 2020 - Ger's Garage</p>
+    </footer>
+  </body>
+</html>

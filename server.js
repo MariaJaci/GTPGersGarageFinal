@@ -4,8 +4,13 @@ const express = require('express');
 const dotenv = require('dotenv');
 // HTTP request logger middleware for node.js
 const morgan = require('morgan');
+
 //package to display msg in different colors
 const colors = require('colors');
+
+const path = require('path');
+
+
 
 const errorHandler = require('./middleware/error');
 
@@ -25,12 +30,17 @@ const auth = require('./routes/auth');
 const app = express();
 
 // in order to use res.body we need to add a piece of middleware body parser which is already included on express
+app.use(express.static(path.resolve(__dirname, 'frontend')));
 app.use(express.json());
 
-// Dev loggin middleware
+// Dev loggin middleware to show in the console
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
+app.post('/post/json', function (req, res) {
+  console.log('Error ' + JSON.stringify(req.body));
+});
 
 //Mount routers
 app.use('/api/v1/staff', staff);
@@ -38,6 +48,10 @@ app.use('/api/v1/supplies', supplies);
 app.use('/api/v1/auth', auth);
 
 app.use(errorHandler);
+
+app.get('/', function (req, res) {
+  res.render('index');
+});
 
 const PORT = process.env.PORT || 5000;
 
@@ -54,3 +68,4 @@ process.on('unhandledRejection', (err, promise) => {
   // Close server and exit process with failure
   server.close(() => process.exit(1));
 });
+// all code above is based on node.js Udemy course.

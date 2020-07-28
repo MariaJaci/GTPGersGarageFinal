@@ -15,3 +15,4 @@ router.route('/').get(getSupplies).post(addSupply);
 router.route('/:id').get(getSupply).put(updateSupply).delete(deleteSupply);
 
 module.exports = router;
+// all code above is based on Node.js Udemy course.

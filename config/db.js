@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 //Function to export and call within server.js.
 const connectDB = async () => {
-  //mongoose method return a promise
+  //mongoose method return a promise so use async await
   const connection = await mongoose.connect(process.env.MONGO_URI, {
     // to avoid warnings from happening in the console
     useNewUrlParser: true,

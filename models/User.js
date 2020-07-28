@@ -73,3 +73,4 @@ UserSchema.methods.matchPassword = async function (enteredPassword) {
 };
 
 module.exports = mongoose.model('User', UserSchema);
+// all code above is based on Node.js Udemy course.
