@@ -1,52 +1,36 @@
-/*const login = document.getElementById('login');
-login.addEventListener('submit', function (e) {
-  e.preventDefaut();
-
-  const loginData = new loginData(this);
-
-  fetch('/api/v1/auth/login', {
-    method: 'POST',
-    body: loginData,
+/*fetch('http://localhost:5000/api/auth/login', {
+  method: 'POST', // or 'PUT'
+  body: JSON.stringify(user), // data can be `string` or {object}!
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
+  .then((res) => {
+    document.getElementById('login');
+    console.log(res);
   })
-    .then(function (response) {
-      return response.text();
-    })
-    .then(function (text) {
-      console.log(text);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-});*/
+  .catch((error) => console.error('Error:', error));
 
-const login = document.getElementById('loginForm');
-const btn = document.getElementById('submit');
-btn.addEventListener('click', login);
-const sendHttpRequest = (method, url, data) => {
-  return fetch(url, {
-    method: method,
-    body: JSON.stringify(data),
-    headers: data ? { 'Content-type': 'application/json' } : {},
-  }).then((response) => {
-    if (response.status >= 400) {
-      //!response.ok
-      return response.json().then((errResData) => {
-        const error = new Error('Something went wrong!');
-        error.data = errResData;
-        throw error;
-      });
-    }
+// code from Stack Overflow https://stackoverflow.com/questions/54007817/postman-able-to-send-post-request-but-not-my-frontend-code*/
 
-    return response.json();
-  });
-};
-const loginData = () => {
-  sendHttpRequest('POST', '/api/v1/auth/login')
-    .then((responseData) => {
-      console.log(responseData);
-    })
+document.getElementById('login').addEventListener('submit', addLogin);
 
-    .catch((err) => {
-      console.log(err);
-    });
-};
+function addLogin(e) {
+  e.preventDefault();
+
+  let email = document.getElementById('email').value;
+
+  let password = document.getElementById('password').value;
+
+  fetch('http://localhost:5000/api/v1/auth/login', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify({ email: email, password: password }),
+  })
+    .then((res) => res.json())
+    .then((data) => console.log(data));
+}
+// code taken from Fetch API Introduction - TraversyMedia https://www.youtube.com/watch?v=Oive66jrwBs

@@ -8,9 +8,8 @@ const morgan = require('morgan');
 //package to display msg in different colors
 const colors = require('colors');
 
+// path to link both frontend and api
 const path = require('path');
-
-
 
 const errorHandler = require('./middleware/error');
 
@@ -29,8 +28,10 @@ const auth = require('./routes/auth');
 
 const app = express();
 
+// path to link both frontend and api
+app.use(express.static(path.join(__dirname, 'frontend')));
+
 // in order to use res.body we need to add a piece of middleware body parser which is already included on express
-app.use(express.static(path.resolve(__dirname, 'frontend')));
 app.use(express.json());
 
 // Dev loggin middleware to show in the console

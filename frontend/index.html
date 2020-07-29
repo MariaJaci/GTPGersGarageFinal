@@ -15,7 +15,7 @@
       crossorigin="anonymous"
     />
     <!--Linking the server api with the fronted-->
-    <!-- <script src="fetch.js" defer></script> -->
+    <script src="fetch.js" defer></script>
 
 
     <title>Welcome to Ger's Garage!</title>
@@ -120,31 +120,31 @@
             <h2>Please, enter your email and password in order to login.</h2>
             <div class="column-2 bg-light">
 
-              <form enctype="application/json" action="/api/v1/auth/login" method="post" class="login-form" id="loginForm">
+              <form enctype="application/json" action="/api/v1/auth/login" method="post" class="login-form" id="login">
                 <div class="form-control">
                  <input type="text" name="email" id="email" placeholder="Enter your email" />
                 </div>
                 <div class="form-control">
-                  <input type="text" name="password" id="password" placeholder="Enter your password" />
+                  <input type="password" name="password" id="password" placeholder="Enter your password" />
                 </div>
-                <button type="submit" id="submit" class="btn" />Submit</button>
+                <button type="submit" id="submit" class="btn">Submit</button>
               </form>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="register" class="register flex-columns">
-      <!--  <div class="row">
+     <!-- <section id="register" class="register flex-columns">
+        <div class="row">
           <div class="column">
             <div class="column-1">
               <img src="./images/speedometer.jpg" alt="speedometer" />
             </div>
-          </div> CHECK IF I WANT THIS LATER-->
+          </div> CHECK IF I WANT THIS LATER
           <div class="column">
             <h2>Please, provide your details in order to register.<h2>
             <div class="column-2 bg-light">
-              <!-- <form action="" class="register-form">
+               <form action="" class="register-form">
                 <div class="form-control">
                   <input
                     type="text"
