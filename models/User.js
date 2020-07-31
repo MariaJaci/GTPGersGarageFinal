@@ -35,7 +35,6 @@ const UserSchema = new mongoose.Schema({
       'Please phone number cannot be more than 12 characters long',
     ],
     required: [true, 'Please enter your phone number'],
-    unique: true,
   },
   vehicleMake: {
     type: String,

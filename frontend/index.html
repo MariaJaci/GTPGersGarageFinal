@@ -127,24 +127,18 @@
                 <div class="form-control">
                   <input type="password" name="password" id="password" placeholder="Enter your password" />
                 </div>
-                <button type="submit" id="submit" class="btn">Submit</button>
+                <button type="submit" id="submit" class="btn">Login</button>
               </form>
             </div>
           </div>
         </div>
       </section>
 
-     <!-- <section id="register" class="register flex-columns">
-        <div class="row">
-          <div class="column">
-            <div class="column-1">
-              <img src="./images/speedometer.jpg" alt="speedometer" />
-            </div>
-          </div> CHECK IF I WANT THIS LATER
+      <section id="register" class="register flex-columns">
           <div class="column">
             <h2>Please, provide your details in order to register.<h2>
             <div class="column-2 bg-light">
-               <form action="" class="register-form">
+              <form enctype="application/json" action="/api/v1/auth/register" method="post"  class="register-form" id="register">
                 <div class="form-control">
                   <input
                     type="text"
@@ -162,6 +156,9 @@
                   />
                 </div>
                 <div class="form-control">
+                  <input type="password" name="password" id="password" placeholder="Enter your password" />
+                </div>
+                <div class="form-control">
                   <input
                     type="text"
                     name="phone"
@@ -173,30 +170,30 @@
                   <input
                     type="text"
                     name="vehicle make"
-                    id="vehicle make"
+                    id="vehicleMake"
                     placeholder="Enter vehicle make"
                   />
+                </div>
+                
+                <div class="form-control">
+                  <input
+                    type="text"
+                    name="vehicle engine"
+                    id="vehicleEngine"
+                    placeholder="Enter vehicle engine"
+                  />
+                </div>
                   <div class="form-control">
                     <input
                       type="text"
                       name="vehicle license"
-                      id="vehicle license"
+                      id="vehicleLicense"
                       placeholder="Enter vehicle license"
                     />
-                    <div class="form-control">
-                      <input
-                        type="text"
-                        name="vehicle engine"
-                        id="vehicle engine"
-                        placeholder="Enter vehicle engine"
-                      />
-                      <div class="form-control">
-                  <input type="text" id="message" name="message"
-                    placeholder="Type your message"/>
-                  
                   </div>
-                <input type="submit" value="Register" id="submit" class="btn" />
-              </form> -->
+                      
+                  <button type="submit" id="submit" class="btn">Register</button>
+                </form> 
             </div>
           </div>
         </div>
