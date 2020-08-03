@@ -73,6 +73,37 @@ exports.makeBooking = asyncHandler(async (req, res, next) => {
     data: booking,
   });
 });
+exports.updateBooking = asyncHandler(async (req, res, next) => {
+  req.body.user = req.params.userId;
+  // Is user == ger
+
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(
+      new ErrorResponse(`No user with the id of ${req.params.id}`),
+      404
+    );
+  }
+  
+  req.body.userId = user.id;
+  // Gets the date coming from front (String) and converts it into js Date
+  // https://www.w3schools.com/jsref/jsref_getday.asp
+  const bookingDate = new Date(req.body.bookingDate);
+
+  if(bookingDate.getDay() === 0){
+    return next(
+      new ErrorResponse(`You can't book service on Sundays`, 400)
+    );
+  }
+
+  const booking = await Booking.create(req.body);
+  // 201 response data created
+  res.status(201).json({
+    success: true,
+    data: booking,
+  });
+});
 
 // all code above is based on Node.js Udemy course.i
 // Calculates the minimum cost for booking type
