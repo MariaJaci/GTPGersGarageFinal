@@ -6,6 +6,7 @@ const asyncHandler = require('../middleware/async');
 // bring in the model
 // User object can call methods, register, etc
 const User = require('../models/User');
+const Staff = require('../models/Staff');
 
 // @desc  Register user
 // @route POST/api/v1/auth/register
@@ -63,6 +64,27 @@ exports.login = asyncHandler(async (req, res, next) => {
   sendTokenResponse(user, 200, res);
 });
 
+
+exports.staffLogin = asyncHandler(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  // Validate email and password
+  if (!email || !password) {
+    return next(new ErrorResponse('Please enter your email and password', 400));
+  }
+  // Check for user email comes from the body and check if it matches in the database and also checks for the password
+  const staff = await Staff.findOne({ email }).select('+password');
+  // make sure user exists
+  if (!staff) {
+    return next(new ErrorResponse('Invalid credentials ', 401)); //401 unauthorized
+  }
+  //Check if password matches
+  const isMatch = await staff.matchPassword(password);
+  if (!isMatch) {
+    return next(new ErrorResponse('Invalid credentials ', 401)); //401 unauthorized
+  }
+  sendTokenResponse(staff, 200, res);
+});
 // 01/08 Create costum function that will get token from model, create cookie, send response and store in the browser. Pass in 3 parameters: user, status code and response object, to access them
 const sendTokenResponse = (user, statusCode, res) => {
   //create the token

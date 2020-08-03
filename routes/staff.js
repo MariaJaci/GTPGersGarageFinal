@@ -8,6 +8,7 @@ const {
   updateStaff,
   deleteStaff,
 } = require('../controllers/staff');
+const { staffLogin } = require('../controllers/auth');
 
 //Express router
 const router = express.Router();
@@ -16,6 +17,8 @@ const router = express.Router();
 router.route('/').get(getAllStaff).post(createStaff);
 
 router.route('/:id').get(getStaff).put(updateStaff).delete(deleteStaff);
+
+router.route('/login').post(staffLogin);
 
 //Export the router
 module.exports = router;
