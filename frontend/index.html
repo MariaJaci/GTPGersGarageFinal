@@ -109,7 +109,7 @@
         </div>
       </section>
 
-      <section id="login" class="login flex-columns">
+      <section id="loginSection" class="login flex-columns">
         <div class="row">
           <div class="column">
             <div class="column-1">
@@ -119,7 +119,7 @@
           <div class="column">
             <h2>Please, enter your email and password in order to login.</h2>
             <div class="column-2 bg-light">
-
+              <!-- <form enctype="application/json" method="post" class="login-form" id="login"> -->
               <form enctype="application/json" action="/api/v1/auth/login" method="post" class="login-form" id="login">
                 <div class="form-control">
                  <input type="text" name="email" id="email" placeholder="Enter your email" />
@@ -127,7 +127,7 @@
                 <div class="form-control">
                   <input type="password" name="password" id="password" placeholder="Enter your password" />
                 </div>
-                <button type="submit" id="submit" class="btn">Login</button>
+                <button type="submit" id="submitLogin" class="btn">Login</button>
               </form>
             </div>
           </div>
@@ -192,7 +192,7 @@
                     />
                   </div>
                       
-                  <button type="submit" id="submit" class="btn">Register</button>
+                  <button type="submit" id="submitRegister" class="btn">Register</button>
                 </form> 
             </div>
           </div>

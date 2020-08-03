@@ -32,10 +32,8 @@ exports.register = asyncHandler(async (req, res, next) => {
     vehicleEngine,
     vehicleLicense,
   });
-  // Create token
-  const token = user.getSignedJwtToken();
-
-  res.status(200).json({ success: true, token });
+  // send a cookie with a token in it
+  sendTokenResponse(user, 200, res);
 });
 
 // @desc  Login user
@@ -62,9 +60,26 @@ exports.login = asyncHandler(async (req, res, next) => {
   if (!isMatch) {
     return next(new ErrorResponse('Invalid credentials ', 401)); //401 unauthorized
   }
-  // Create token and keep going if everything matches
-  const token = user.getSignedJwtToken();
-
-  res.status(200).json({ success: true, token });
+  sendTokenResponse(user, 200, res);
 });
+
+// 01/08 Create costum function that will get token from model, create cookie, send response and store in the browser. Pass in 3 parameters: user, status code and response object, to access them
+const sendTokenResponse = (user, statusCode, res) => {
+  //create the token
+  const token = user.getSignedJwtToken();
+  // create the cookie set the experation for 30 days
+  const options = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+    ),
+    //the cookie will only be accessd throught the client side script
+    httpOnly: true,
+  };
+  // sending the token back in a response and also setting a cookie, it's up the the client side how it will be handled.
+  res.status(statusCode).cookie('token', token, options).json({
+    success: true,
+    token,
+  });
+};
+
 // all code above is based on Node.js Udemy course.

@@ -11,6 +11,10 @@ const colors = require('colors');
 // path to link both frontend and api
 const path = require('path');
 
+const bodyParser = require('body-parser');
+
+const cookieParser = require('cookie-parser');
+
 const errorHandler = require('./middleware/error');
 
 const connectDB = require('./config/db');
@@ -25,6 +29,7 @@ connectDB();
 const staff = require('./routes/staff');
 const supplies = require('./routes/supplies');
 const auth = require('./routes/auth');
+const booking = require('./routes/booking');
 
 const app = express();
 
@@ -34,6 +39,14 @@ app.use(express.static(path.join(__dirname, 'frontend')));
 // in order to use res.body we need to add a piece of middleware body parser which is already included on express
 app.use(express.json());
 
+// Enable parsing of params coming from frontend
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+// Enable use of cookies
+app.use(cookieParser());
 // Dev loggin middleware to show in the console
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -47,6 +60,7 @@ app.post('/post/json', function (req, res) {
 app.use('/api/v1/staff', staff);
 app.use('/api/v1/supplies', supplies);
 app.use('/api/v1/auth', auth);
+app.use('/api/v1/booking', booking);
 
 app.use(errorHandler);
 

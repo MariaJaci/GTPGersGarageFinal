@@ -1,9 +1,11 @@
-const { response } = require('express');
-
+// const { response } = require('express');
+// console.log('run from fetch.js');
 // Standart post request using fetch - Login
 document.getElementById('login').addEventListener('submit', addLogin);
 // pass in event parameter to prevent submiting to a file.
+console.log('run on fetch.js');
 function addLogin(e) {
+  console.log('Coming from fetch');
   e.preventDefault();
   // get email and password values
   let email = document.getElementById('email').value;
@@ -20,7 +22,15 @@ function addLogin(e) {
     body: JSON.stringify({ email: email, password: password }),
   })
     .then((res) => res.json())
-    .then((data) => console.log(data));
+    .then((data) => {
+      if (data.success == true) {
+        console.log('User has logged in succesfully');
+        console.log(data);
+      } else {
+        console.log('Not logged in');
+        console.log(data.success);
+      }
+    });
 }
 
 // Standart post request using fetch - Register
