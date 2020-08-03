@@ -25,6 +25,7 @@ const StaffSchema = new mongoose.Schema({
   role: {
     type: String,
     required: [true, 'Please enter the role'],
+    enum: ['admin', 'mechanic'] 
   },
 });
 
