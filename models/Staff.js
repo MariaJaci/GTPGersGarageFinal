@@ -27,6 +27,12 @@ const StaffSchema = new mongoose.Schema({
     required: [true, 'Please enter the role'],
     enum: ['admin', 'mechanic'] 
   },
+  password: {
+    type: String,
+    required: [true, 'Please enter your password'],
+    minlength: 6,
+    select: false, // don't return the password
+  },
 });
 
 module.exports = mongoose.model('Staff', StaffSchema);
