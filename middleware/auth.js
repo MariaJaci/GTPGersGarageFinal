@@ -7,12 +7,8 @@ const User = require('../models/User');
 exports.protect = asyncHandler(async (req, res, next) => {
   let token;
   //chech the headers for testing on postman
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
-  ) {
-    token = req.headers.authorization.split(' ')[1];
-  } else if (req.cookies.token) {
+  
+  if (req.cookies.token) {
     token = req.cookies.token;
   }
   // make sure token exists
@@ -25,7 +21,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
     console.log(decoded);
 
-    req.user = await User.findById(decoded.id);
+    req.user = await User.findById(decoded._id);
 
     next();
   } catch (err) {

@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const BookingSchema = new mongoose.Schema({
   price: {
     type: Number,
-    required: [true, 'Please, enter a price for the service'],
   },
 
   userId: {
@@ -13,10 +12,10 @@ const BookingSchema = new mongoose.Schema({
     required: true,
   },
 
-  /*staffId: {
+  staffId: {
     type: mongoose.Schema.ObjectId,
     ref: 'Staff',
-    required: true,
+    // TODO not required
   },
 
   supplies: [
@@ -28,10 +27,8 @@ const BookingSchema = new mongoose.Schema({
   bookingType: {
     type: String,
     enum: ['Major Repair', 'Annual Service', 'Major Service', 'Repair / Fault'],
-    required: true,
     message: 'Please inform a valid booking type',
   },
-  */
 
   bookingDate: {
     type: Date,
@@ -52,6 +49,7 @@ const BookingSchema = new mongoose.Schema({
       'Collected', //When the customer has taken the vehicle away and paid their bill
       'Unrepairable / Scrapped', // when the fault cannot be fixed.
     ],
+    default: "Booked"
   },
 });
 
