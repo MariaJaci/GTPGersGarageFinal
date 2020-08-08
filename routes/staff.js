@@ -8,7 +8,7 @@ const {
   updateStaff,
   deleteStaff,
 } = require('../controllers/staff');
-const { staffLogin } = require('../controllers/auth');
+const { staffLogin } = require('../controllers/auth'); // SHOULDN'T THIS VARIABLE BE IN ROUTES/AUTH???
 
 //Express router
 const router = express.Router();

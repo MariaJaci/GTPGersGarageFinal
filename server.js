@@ -1,3 +1,9 @@
+/*Guided Technology Project
+Higher Diploma in Computing in Science
+CCT College - Dublin
+Student: Maria Jaciara Lagares
+ID: 2019431 */
+
 // Web framework server to create routes req and res
 const express = require('express');
 // Dotenv create environment variable

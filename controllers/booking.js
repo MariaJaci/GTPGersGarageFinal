@@ -1,3 +1,9 @@
+/*Guided Technology Project
+Higher Diploma in Computing in Science
+CCT College - Dublin
+Student: Maria Jaciara Lagares
+ID: 2019431 */
+
 const ErrorResponse = require('../utils/errorResponse');
 // bring in the async handler class
 const asyncHandler = require('../middleware/async');
@@ -5,6 +11,7 @@ const asyncHandler = require('../middleware/async');
 const Booking = require('../models/Booking');
 const User = require('../models/User');
 const { findById } = require('../models/Booking');
+const Staff = require('../models/Staff');
 
 // @desc  Get Bookings
 // @route GET/api/v1/booking
@@ -50,10 +57,13 @@ exports.makeBooking = asyncHandler(async (req, res, next) => {
   }
 
   req.body.userId = user.id;
-  // Gets the date coming from front (String) and converts it into js Date
-  // https://www.w3schools.com/jsref/jsref_getday.asp
-  const bookingDate = new Date(req.body.bookingDate);
+  // Gets the date coming from front (String) and converts it into js Date CHECK THIS!!!
 
+  let bookingDate = new Date(req.body.bookingDate);
+  let readableDate = bookingDate.toString();
+
+  //"The getDay() method returns the day of the week (from 0 to 6) for the specified date, Sunday being = 0."
+  // https://www.w3schools.com/jsref/jsref_getday.asp
   if (bookingDate.getDay() === 0) {
     return next(new ErrorResponse(`You can't book a service on Sundays`, 401));
   }
@@ -70,7 +80,7 @@ exports.makeBooking = asyncHandler(async (req, res, next) => {
 // @route PUT /api/v1/booking/id
 // @access Private
 exports.updateBooking = asyncHandler(async (req, res, next) => {
-  // "The parseFloat() method converts a string into a decimal number. It accepts two arguments. The first argument is the string to convert. The second argument is called the radix. This is the base number used in mathematical systems. In this case it will be 10" - https://gomakethings.com/converting-strings-to-numbers-with-vanilla-javascript/
+  // "The parseFloat() method converts a string into a decimal number. It accepts two arguments. The first argument is the string to convert. The second argument is called the radix. This is the base number used in mathematical systems. In this case it will be 10" - https://gomakethings.com/converting-strings-to-numbers-with-vanilla-javascript/ CHECK WHY IT'S NOT ADDING PRICE AND BOOKING TYPE!!!
   req.body.price = req.body.price;
   let string = bookingTypeMinimumCost(req.body.bookingType);
   let float = parseFloat(string, 10);
@@ -82,7 +92,7 @@ exports.updateBooking = asyncHandler(async (req, res, next) => {
     runValidators: true, // run mongoose validators on updates
   });
 
-  // TODO add price of parts
+  // TODO add price of parts CHECK THIS!!!
   if (!booking) {
     return next(
       new ErrorResponse(
@@ -103,7 +113,7 @@ function bookingTypeMinimumCost(bookingType) {
 
   switch (bookingType) {
     case 'Major Repair':
-      minimunCost = 175;
+      minimunCost = 300;
       break;
     case 'Annual Service':
       minimunCost = 200;
@@ -121,6 +131,19 @@ function bookingTypeMinimumCost(bookingType) {
   console.log('minimunCost', minimunCost);
   return minimunCost;
 }
+
+// Logic to limite the number of bookings per mechanic. Each mechanic could carry out AT MOST 4 services/repairs in one day. If the booking is a Major Repair then this would count double. CHECH THIS SH%#$$!!!
+
+const mechanic = function (staffId) {
+  let tasksPerDay = 0;
+  for (tasksPerDay = 0; tasksPerDay < 4; tasksPerDay++) {
+    if (tasksPerDay < 4) {
+      console.log(`${mechanic} Mechanic can take the tast`);
+    } else if (tasksPerDay >= 4) {
+      console.log(`${mechanic} Mechanic cannot take the tast`);
+    }
+  }
+};
 
 // @desc  Delete single booking
 // @route DELETE /api/v1/booking/:id

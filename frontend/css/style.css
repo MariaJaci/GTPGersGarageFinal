@@ -1,4 +1,4 @@
-/* link from fonts.google.com */
+/* link for custom fonts from fonts.google.com */
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap');
 
 /*basic style for all */
@@ -109,24 +109,28 @@ img {
 }
 
 .login-form,
-.register-form {
+.register-form,
+.booking-form {
   width: 100%;
   padding: 20px;
 }
-
+/*
 .login-form label,
-.register-form label {
+.register-form label,
+.booking-form label {
   display: block;
   margin-bottom: 5px;
-}
+}*/
 
 .login-form .form-control,
-.register-form .form-control {
+.register-form .form-control,
+.booking-form .form-control {
   margin-bottom: 15px;
 }
 
 .login-form input,
-.register-form input {
+.register-form input,
+.booking-form input {
   width: 100%;
   padding: 4px;
   height: 40px;
@@ -134,12 +138,14 @@ img {
 }
 
 .login-form input:focus,
-.register-form input:focus {
+.register-form input:focus,
+.booking-form input:focus {
   outline-color: #28a745;
 }
 
 .login-form .btn,
-.register-form .btn {
+.register-form .btn,
+.booking-form .btn {
   padding: 12px 0;
   margin-top: 20px;
 }

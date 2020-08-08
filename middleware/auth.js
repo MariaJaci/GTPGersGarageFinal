@@ -5,6 +5,7 @@ const User = require('../models/User');
 // Use protect to limite access to booking routes, only logged in user is able to book a service
 //Protect (middleware) routes
 exports.protect = asyncHandler(async (req, res, next) => {
+  //CHECK IF PROTECT IS WORKING!!!
   let token;
 
   if (req.cookies.token) {

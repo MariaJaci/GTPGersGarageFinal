@@ -1,107 +1,110 @@
 /* text colors*/
-.text-primary{
-    color: #28a745;
+.text-primary {
+  color: #28a745;
 }
 
-.text-secondary{
-    color: #0284d0 ;
+.text-secondary {
+  color: #0284d0;
 }
 
-.btn{
-    cursor: pointer;
-    display: inline-block;
-    padding: 10px 30px;
-    color: #ffffff;
-    background-color: #28a745;
-    border: none;
-    border-radius: 5px;
+.btn {
+  cursor: pointer;
+  display: inline-block;
+  padding: 10px 30px;
+  color: #ffffff;
+  background-color: #28a745;
+  border: none;
+  border-radius: 5px;
 }
 
-.btn:hover{
-    opacity: 0.9;
+.btn:hover {
+  opacity: 0.9;
 }
 /*buttons and backgrounds*/
-.btn-primary, .bg-primary{
-    background: #28a745;
-    color: #ffffff;
+.btn-primary,
+.bg-primary {
+  background: #28a745;
+  color: #ffffff;
 }
 
-.btn-secondary, .bg-secondary{
-    background: #0284d0;
-    color: #ffffff;
+.btn-secondary,
+.bg-secondary {
+  background: #0284d0;
+  color: #ffffff;
 }
 
-.btn-dark, .bg-dark{ 
-    background: #333333;
-    color: #ffffff;
+.btn-dark,
+.bg-dark {
+  background: #333333;
+  color: #ffffff;
 }
 
-.btn-light, .bg-light{
-    background: #f4f4f4;
-    color: #333333;
+.btn-light,
+.bg-light {
+  background: #f4f4f4;
+  color: #333333;
 }
 
-.btn-outline{
-    background: transparent;
-    border: 1px solid;
-    color: #ffffff; 
+.btn-outline {
+  background: transparent;
+  border: 1px solid;
+  color: #ffffff;
 }
 
-.flex-items{
-    display: flex;
-    text-align: center;
-    justify-content: center;
-    text-align: center;
-    height: 100%;
+.flex-items {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
 }
 
-.flex-items > div{
-    padding: 20px;
+.flex-items > div {
+  padding: 20px;
 }
 
-.flex-columns .row{
-display: flex;
-flex-direction: row;
-flex-wrap: wrap;
-width: 100%;
+.flex-columns .row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
-.flex-columns .column{
-    display: flex;
-    flex-direction: column;
-    flex-basis: 100%;
-    flex: 1;
+.flex-columns .column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
 }
 
 .flex-columns .column .column-1,
-.flex-columns .column .column-2{
-    height: 100%;
+.flex-columns .column .column-2 {
+  height: 100%;
 }
 
-.flex-columns img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.flex-columns img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.flex-columns .column-2{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /*it's a column so it has to do to horizontal*/
-    justify-content: center;
-    padding: 30px;
+.flex-columns .column-2 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /*it's a column so it has to do to horizontal*/
+  justify-content: center;
+  padding: 30px;
 }
 
-.flex-columns h2{
-    font-size: 40px;
-    font-weight: 100;
+.flex-columns h2 {
+  font-size: 40px;
+  font-weight: 100;
 }
 
-.flex-items h4{
-    margin-bottom: 10px;
+.flex-items h4 {
+  margin-bottom: 10px;
 }
 
-.flex-columns p{
-    margin: 20px 0;
+.flex-columns p {
+  margin: 20px 0;
 }
-

@@ -64,7 +64,7 @@ exports.login = asyncHandler(async (req, res, next) => {
   sendTokenResponse(user, 200, res);
 });
 
-
+//CHECK THIS BLOCK OF CODE - IT'S NOT DOING ANYTHING
 exports.staffLogin = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
 

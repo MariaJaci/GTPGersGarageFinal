@@ -1,9 +1,9 @@
 // const { response } = require('express');
 // console.log('run from fetch.js');
 // Standart post request using fetch - Login
-document.getElementById('login').addEventListener('submit', addLogin);
+document.getElementById('login').addEventListener('submitLogin', addLogin);
 // pass in event parameter to prevent submiting to a file.
-console.log('run on fetch.js');
+console.log('run on fetch.js'); //FETCH IS NOT DOING ANYTHING!!!
 function addLogin(e) {
   console.log('Coming from fetch');
   e.preventDefault();
@@ -35,7 +35,7 @@ function addLogin(e) {
 
 // Standart post request using fetch - Register
 
-document.querySelector('#register').addEventListener('submit', (e) => {
+document.querySelector('#register').addEventListener('submitRegister', (e) => {
   e.preventDefault();
   let registerForm = document.querySelector('#register');
   const data = new URLSearchParams();

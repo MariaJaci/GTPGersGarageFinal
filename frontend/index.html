@@ -34,7 +34,6 @@
             <li><a href="#login">Login</a></li>
             <li><a href="#register">Register</a></li>
             <li><a href="#booking">Booking</a></li>
-            <li><a href="#supplies">Supplies</a></li>
           </ul>
         </nav>
       </div>
@@ -63,7 +62,7 @@
           <div>
             <i class="fas fa-binoculars fa-2x"></i>
             <div>
-              <h3>Free Check-up</h3>
+              <h3>Great Service</h3>
               <p>
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sit,
                 illo.
@@ -198,6 +197,32 @@
           </div>
         </div>
       </section>
+      
+      <section id="bookingSection" class="booking flex-columns">
+        <div class="row">
+          <div class="column">
+            <div class="column-1">
+              <img src="./images/golden.jpg" alt="man fixing a car" />
+            </div>
+          </div>
+          <div class="column">
+            <h2>Book a service here.</h2>
+            <div class="column-2 bg-light">
+              <form enctype="application/json" action="/api/v1/booking/id" method="post" class="booking-form" id="booking">
+                <div class="form-control">
+                  <input type="date" id="calendar" name="calendar">
+                </div>
+                <div class="form-control">
+                  <textarea id="textarea" name="textarea" rows="4" cols="50" placeholder="Type in a message">
+                    </textarea>
+             </div>
+                <button type="submit" id="submitBooking" class="btn">Create Booking</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </main>
 
     <footer class="footer bg-dark">

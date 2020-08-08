@@ -45,14 +45,11 @@ const UserSchema = new mongoose.Schema({
   vehicleLicense: {
     type: String,
   },
-  /*booking: {
-    type: String,
-  },*/
 });
 
 // Encrypt password using bcrypt. Create some middleware to run before save
 UserSchema.pre('save', async function (next) {
-  // generate salt to hash the password. 10 is the numbers of rounds suggested
+  // generate salt to hash the password. 10 is the numbers of rounds suggested by the documentation.
   const salt = await bcrypt.genSalt(10);
   //hash the password with salt
   this.password = await bcrypt.hash(this.password, salt);

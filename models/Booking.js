@@ -49,7 +49,7 @@ const BookingSchema = new mongoose.Schema({
       'Collected', //When the customer has taken the vehicle away and paid their bill
       'Unrepairable / Scrapped', // when the fault cannot be fixed.
     ],
-    default: "Booked"
+    default: 'Booked',
   },
 });
 
