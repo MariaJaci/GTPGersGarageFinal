@@ -13,6 +13,7 @@ const User = require('../models/User');
 const { findById } = require('../models/Booking');
 const Staff = require('../models/Staff');
 const Supply = require('../models/Supply');
+const moment = require('moment');
 
 // @desc  Get Bookings
 // @route GET/api/v1/booking
@@ -61,7 +62,8 @@ exports.makeBooking = asyncHandler(async (req, res, next) => {
   // Gets the date coming from front (String) and converts it into js Date CHECK THIS!!!
 
   let bookingDate = new Date(req.body.bookingDate);
-  let readableDate = bookingDate.toString();
+  //TODO: THis will be sent to frontend
+  var formatedDate = moment(bookingDate).format('DD/MM/YYYY');
 
   //"The getDay() method returns the day of the week (from 0 to 6) for the specified date, Sunday being = 0."
   // https://www.w3schools.com/jsref/jsref_getday.asp
@@ -81,6 +83,11 @@ exports.makeBooking = asyncHandler(async (req, res, next) => {
 // @route PUT /api/v1/booking/id
 // @access Private
 exports.updateBooking = asyncHandler(async (req, res, next) => {
+  const user = await Staff.findById(req.user._id);
+  if(!user){
+    // The token in cookies does not belong to a staff, so stop their changes as soon as we know
+    return next(new ErrorResponse("You have no access to this endpoint", 400));
+  }
   // "The parseFloat() method converts a string into a decimal number. It accepts two arguments. The first argument is the string to convert. The second argument is called the radix. This is the base number used in mathematical systems. In this case it will be 10" - https://gomakethings.com/converting-strings-to-numbers-with-vanilla-javascript/ CHECK WHY IT'S NOT ADDING PRICE AND BOOKING TYPE!!!
   let repairMinimunCost = bookingTypeMinimumCost(req.body.bookingType);
   let total = repairMinimunCost;
@@ -116,25 +123,22 @@ exports.updateBooking = asyncHandler(async (req, res, next) => {
 });
 
 // all code above is based on Node.js Udemy course.
-
+// why we have so many functions: https://en.wikipedia.org/wiki/Single-responsibility_principle
 getAllParts = async (partsArray) => {
   // code extracted from https://stackoverflow.com/questions/8303900/mongodb-mongoose-findmany-find-all-documents-with-ids-listed-in-array
   return await Supply.find({
     '_id': { $in: partsArray }
   }, function(err, docs){
-      console.log(docs);
+      // console.log(docs);
   });
 };
 
 calculatePartsPrice = async(parts) => {
 
   let total = 0;
-  // console.log("getAllParts");
   const localParts = await getAllParts(parts);
-  // console.log(localParts)
-  await localParts.forEach(part => {
+  localParts.forEach(part => {
     total += part.productPrice;
-    console.log(part);
   });
   return total;
 }

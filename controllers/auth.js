@@ -43,9 +43,6 @@ exports.register = asyncHandler(async (req, res, next) => {
 exports.login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
-  console.log(req.body);
-  console.log(email);
-  console.log(password);
   // Validate email and password
   if (!email || !password) {
     return next(new ErrorResponse('Please enter your email and password', 400));

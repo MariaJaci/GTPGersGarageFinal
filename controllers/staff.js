@@ -70,7 +70,6 @@ exports.updateStaff = asyncHandler(async (req, res, next) => {
 // @access Private
 exports.deleteStaff = asyncHandler(async (req, res, next) => {
   const staff = await Staff.findByIdAndDelete(req.params.id);
-
   if (!staff) {
     return next(
       new ErrorResponse(`Staff not found with the id ${req.params.id}`, 400)
