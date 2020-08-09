@@ -81,10 +81,18 @@ exports.makeBooking = asyncHandler(async (req, res, next) => {
 // @access Private
 exports.updateBooking = asyncHandler(async (req, res, next) => {
   // "The parseFloat() method converts a string into a decimal number. It accepts two arguments. The first argument is the string to convert. The second argument is called the radix. This is the base number used in mathematical systems. In this case it will be 10" - https://gomakethings.com/converting-strings-to-numbers-with-vanilla-javascript/ CHECK WHY IT'S NOT ADDING PRICE AND BOOKING TYPE!!!
-  req.body.price = req.body.price;
-  let string = bookingTypeMinimumCost(req.body.bookingType);
-  let float = parseFloat(string, 10);
-  let total = (req.body.price = req.body.price) + float;
+  let repairMinimunCost = bookingTypeMinimumCost(req.body.bookingType);
+  let total = repairMinimunCost;
+
+  if(isNaN(req.body.price)){
+    req.body.price = 0;    
+  }
+
+  if(req.body.price > 0){
+    total = total + parseFloat(req.body.price); 
+  }
+
+  req.body.price = total;
 
   const booking = await Booking.findByIdAndUpdate(req.params.id, req.body, {
     //req.body send requests
@@ -109,7 +117,6 @@ exports.updateBooking = asyncHandler(async (req, res, next) => {
 // Calculates the minimum cost for booking type
 function bookingTypeMinimumCost(bookingType) {
   let minimunCost = 0;
-  console.log(bookingType);
 
   switch (bookingType) {
     case 'Major Repair':
@@ -128,7 +135,6 @@ function bookingTypeMinimumCost(bookingType) {
       minimunCost = 50;
       break;
   }
-  console.log('minimunCost', minimunCost);
   return minimunCost;
 }
 
