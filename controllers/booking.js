@@ -12,6 +12,7 @@ const Booking = require('../models/Booking');
 const User = require('../models/User');
 const { findById } = require('../models/Booking');
 const Staff = require('../models/Staff');
+const Supply = require('../models/Supply');
 
 // @desc  Get Bookings
 // @route GET/api/v1/booking
@@ -92,7 +93,9 @@ exports.updateBooking = asyncHandler(async (req, res, next) => {
     total = total + parseFloat(req.body.price); 
   }
 
-  req.body.price = total;
+  const partsCost = await calculatePartsPrice(req.body.supplies);
+
+  req.body.price = total + partsCost;
 
   const booking = await Booking.findByIdAndUpdate(req.params.id, req.body, {
     //req.body send requests
@@ -114,6 +117,27 @@ exports.updateBooking = asyncHandler(async (req, res, next) => {
 
 // all code above is based on Node.js Udemy course.
 
+getAllParts = async (partsArray) => {
+  // code extracted from https://stackoverflow.com/questions/8303900/mongodb-mongoose-findmany-find-all-documents-with-ids-listed-in-array
+  return await Supply.find({
+    '_id': { $in: partsArray }
+  }, function(err, docs){
+      console.log(docs);
+  });
+};
+
+calculatePartsPrice = async(parts) => {
+
+  let total = 0;
+  // console.log("getAllParts");
+  const localParts = await getAllParts(parts);
+  // console.log(localParts)
+  await localParts.forEach(part => {
+    total += part.productPrice;
+    console.log(part);
+  });
+  return total;
+}
 // Calculates the minimum cost for booking type
 function bookingTypeMinimumCost(bookingType) {
   let minimunCost = 0;
