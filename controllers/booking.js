@@ -50,7 +50,6 @@ exports.makeBooking = asyncHandler(async (req, res, next) => {
   req.body.user = req.params.userId;
 
   const user = await User.findById(req.params.id);
-
   if (!user) {
     return next(
       new ErrorResponse(`No user with the id of ${req.params.id}`),
@@ -60,7 +59,7 @@ exports.makeBooking = asyncHandler(async (req, res, next) => {
 
   req.body.userId = user.id;
   // Gets the date coming from front (String) and converts it into js Date CHECK THIS!!!
-
+  // TODO
   let bookingDate = new Date(req.body.bookingDate);
   //TODO: THis will be sent to frontend
   var formatedDate = moment(bookingDate).format('DD/MM/YYYY');
@@ -83,24 +82,28 @@ exports.makeBooking = asyncHandler(async (req, res, next) => {
 // @route PUT /api/v1/booking/id
 // @access Private
 exports.updateBooking = asyncHandler(async (req, res, next) => {
+  // If user logged in is not staff, they can not update bookings
   const user = await Staff.findById(req.user._id);
   if(!user){
     // The token in cookies does not belong to a staff, so stop their changes as soon as we know
     return next(new ErrorResponse("You have no access to this endpoint", 400));
   }
-
+  // get mechanic 
   const mechanic = await Staff.findById(req.body.staffId);
+  // get all bookings from that mechanic
   const bookingWeight = getBookingWeight(req.body.bookingType);
-
+  // verify if mechanic is not too busy
   if(!await canMechanicTakeJob(mechanic._id, bookingWeight)){
     return next(new ErrorResponse("Mechanic is too busy", 400));
   }
-  
+
   // code came from https://stackoverflow.com/questions/33049707/push-items-into-mongo-array-via-mongoose 
   // Adrian Schneider comment
 
+  // adds booking to mechanic if not too busy
   Staff.update(
-    { _id: mechanic._id }, 
+    { _id: mechanic._id },
+    // Adds  booking id coming from request to mechanic bookings array 
     { $push: { bookings: req.params.id } },
     function(err, doc)  {
       console.log(doc)
@@ -108,21 +111,26 @@ exports.updateBooking = asyncHandler(async (req, res, next) => {
   );
 
   // "The parseFloat() method converts a string into a decimal number. It accepts two arguments. The first argument is the string to convert. The second argument is called the radix. This is the base number used in mathematical systems. In this case it will be 10" - https://gomakethings.com/converting-strings-to-numbers-with-vanilla-javascript/ CHECK WHY IT'S NOT ADDING PRICE AND BOOKING TYPE!!!
+  // verifies the minimun cost for booking
   let repairMinimunCost = bookingTypeMinimumCost(req.body.bookingType);
   let total = repairMinimunCost;
-
+  // IT we dont have a price coming from frontend, we create it as 0
   if(isNaN(req.body.price)){
     req.body.price = 0;    
   }
 
+  // if price coming from frontend > 0, we add it to total
   if(req.body.price > 0){
     total = total + parseFloat(req.body.price); 
   }
 
+  // calculates the cost for all parts in update
   const partsCost = await calculatePartsPrice(req.body.supplies);
 
+  // adds all costs together
   req.body.price = total + partsCost;
 
+  // update booking
   const booking = await Booking.findByIdAndUpdate(req.params.id, req.body, {
     //req.body send requests
     new: true, //retuns only the updated booking
