@@ -88,6 +88,25 @@ exports.updateBooking = asyncHandler(async (req, res, next) => {
     // The token in cookies does not belong to a staff, so stop their changes as soon as we know
     return next(new ErrorResponse("You have no access to this endpoint", 400));
   }
+
+  const mechanic = await Staff.findById(req.body.staffId);
+  const bookingWeight = getBookingWeight(req.body.bookingType);
+
+  if(!await canMechanicTakeJob(mechanic._id, bookingWeight)){
+    return next(new ErrorResponse("Mechanic is too busy", 400));
+  }
+  
+  // code came from https://stackoverflow.com/questions/33049707/push-items-into-mongo-array-via-mongoose 
+  // Adrian Schneider comment
+
+  Staff.update(
+    { _id: mechanic._id }, 
+    { $push: { bookings: req.params.id } },
+    function(err, doc)  {
+      console.log(doc)
+    }
+  );
+
   // "The parseFloat() method converts a string into a decimal number. It accepts two arguments. The first argument is the string to convert. The second argument is called the radix. This is the base number used in mathematical systems. In this case it will be 10" - https://gomakethings.com/converting-strings-to-numbers-with-vanilla-javascript/ CHECK WHY IT'S NOT ADDING PRICE AND BOOKING TYPE!!!
   let repairMinimunCost = bookingTypeMinimumCost(req.body.bookingType);
   let total = repairMinimunCost;
@@ -166,19 +185,45 @@ function bookingTypeMinimumCost(bookingType) {
   return minimunCost;
 }
 
+function getBookingWeight(bookingsType){
+  if(bookingsType == 'Major Repair'){
+    return 2;
+  }
+  return 1;
+}
+
 // Logic to limite the number of bookings per mechanic. Each mechanic could carry out AT MOST 4 services/repairs in one day. If the booking is a Major Repair then this would count double. CHECH THIS SH%#$$!!!
 
-const mechanic = function (staffId) {
-  let tasksPerDay = 0;
-  for (tasksPerDay = 0; tasksPerDay < 4; tasksPerDay++) {
-    if (tasksPerDay < 4) {
-      console.log(`${mechanic} Mechanic can take the tast`);
-    } else if (tasksPerDay >= 4) {
-      console.log(`${mechanic} Mechanic cannot take the tast`);
-    }
+canMechanicTakeJob = async (staffId, newBookingWeight) =>{
+  //  gets all the bookings for that staff, sums their weight together
+  // if their weight > 4, staff is too busy, if not, staff can take job
+  let maximumJobsADay = 4;
+  let currentJobsNumber = 0;
+
+  const mechanic = await Staff.findOne({ _id : staffId });
+  const bookings = await getBookingsById(mechanic.bookings);
+
+  // console.log(bookings)
+  /**/
+  bookings.forEach(booking => {
+    currentJobsNumber += getBookingWeight(booking.bookingType);
+  });
+
+  if((currentJobsNumber + newBookingWeight) > maximumJobsADay){
+    return false;
   }
+  return true;
+  /**/
 };
 
+
+getBookingsById = async (bookingsId) => {
+  return await Booking.find({
+    '_id': { $in: bookingsId }
+  }, function(err, docs){
+      // console.log(docs);
+  });
+}
 // @desc  Delete single booking
 // @route DELETE /api/v1/booking/:id
 // @access Private

@@ -30,6 +30,11 @@ const StaffSchema = new mongoose.Schema({
     required: [true, 'Please enter the role'],
     enum: ['Admin', 'Mechanic'] 
   },
+  bookings: [
+    {
+      type: mongoose.Schema.ObjectId,
+    },
+  ],
   password: {
     type: String,
     required: [true, 'Please enter your password'],
