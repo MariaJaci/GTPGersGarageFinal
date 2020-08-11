@@ -14,6 +14,7 @@ const { findById } = require('../models/Booking');
 const Staff = require('../models/Staff');
 const Supply = require('../models/Supply');
 const moment = require('moment');
+const jwt = require('jsonwebtoken');
 
 // @desc  Get Bookings
 // @route GET/api/v1/booking
@@ -47,9 +48,11 @@ exports.getBooking = asyncHandler(async (req, res, next) => {
 // @route POST /api/v1/booking/id
 // @access Private because only logged in user will be able to book
 exports.makeBooking = asyncHandler(async (req, res, next) => {
-  req.body.user = req.params.userId;
-
-  const user = await User.findById(req.params.id);
+  // req.body.user = req.params.userId;
+  const decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
+  //This decoded object will have an id property which is the user id. Wherever id has in that token which the user got with logged in with the right credencials will be passed here and will be set to req.user.\
+  
+  const user = await User.findById(decoded.id);
   if (!user) {
     return next(
       new ErrorResponse(`No user with the id of ${req.params.id}`),
