@@ -13,7 +13,6 @@ const User = require('../models/User');
 const { findById } = require('../models/Booking');
 const Staff = require('../models/Staff');
 const Supply = require('../models/Supply');
-const moment = require('moment');
 const jwt = require('jsonwebtoken');
 
 // @desc  Get Bookings
@@ -51,7 +50,7 @@ exports.makeBooking = asyncHandler(async (req, res, next) => {
   // req.body.user = req.params.userId;
   const decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
   //This decoded object will have an id property which is the user id. Wherever id has in that token which the user got with logged in with the right credencials will be passed here and will be set to req.user.\
-  
+
   const user = await User.findById(decoded.id);
   if (!user) {
     return next(
@@ -65,7 +64,6 @@ exports.makeBooking = asyncHandler(async (req, res, next) => {
   // TODO
   let bookingDate = new Date(req.body.bookingDate);
   //TODO: THis will be sent to frontend
-  var formatedDate = moment(bookingDate).format('DD/MM/YYYY');
 
   //"The getDay() method returns the day of the week (from 0 to 6) for the specified date, Sunday being = 0."
   // https://www.w3schools.com/jsref/jsref_getday.asp
@@ -87,29 +85,29 @@ exports.makeBooking = asyncHandler(async (req, res, next) => {
 exports.updateBooking = asyncHandler(async (req, res, next) => {
   // If user logged in is not staff, they can not update bookings
   const user = await Staff.findById(req.user._id);
-  if(!user){
+  if (!user) {
     // The token in cookies does not belong to a staff, so stop their changes as soon as we know
-    return next(new ErrorResponse("You have no access to this endpoint", 400));
+    return next(new ErrorResponse('You have no access to this endpoint', 400));
   }
-  // get mechanic 
+  // get mechanic
   const mechanic = await Staff.findById(req.body.staffId);
   // get all bookings from that mechanic
   const bookingWeight = getBookingWeight(req.body.bookingType);
   // verify if mechanic is not too busy
-  if(!await canMechanicTakeJob(mechanic._id, bookingWeight)){
-    return next(new ErrorResponse("Mechanic is too busy", 400));
+  if (!(await canMechanicTakeJob(mechanic._id, bookingWeight))) {
+    return next(new ErrorResponse('Mechanic is too busy', 400));
   }
 
-  // code came from https://stackoverflow.com/questions/33049707/push-items-into-mongo-array-via-mongoose 
+  // code came from https://stackoverflow.com/questions/33049707/push-items-into-mongo-array-via-mongoose
   // Adrian Schneider comment
 
   // adds booking to mechanic if not too busy
   Staff.update(
     { _id: mechanic._id },
-    // Adds  booking id coming from request to mechanic bookings array 
+    // Adds  booking id coming from request to mechanic bookings array
     { $push: { bookings: req.params.id } },
-    function(err, doc)  {
-      console.log(doc)
+    function (err, doc) {
+      console.log(doc);
     }
   );
 
@@ -118,13 +116,13 @@ exports.updateBooking = asyncHandler(async (req, res, next) => {
   let repairMinimunCost = bookingTypeMinimumCost(req.body.bookingType);
   let total = repairMinimunCost;
   // IT we dont have a price coming from frontend, we create it as 0
-  if(isNaN(req.body.price)){
-    req.body.price = 0;    
+  if (isNaN(req.body.price)) {
+    req.body.price = 0;
   }
 
   // if price coming from frontend > 0, we add it to total
-  if(req.body.price > 0){
-    total = total + parseFloat(req.body.price); 
+  if (req.body.price > 0) {
+    total = total + parseFloat(req.body.price);
   }
 
   // calculates the cost for all parts in update
@@ -156,22 +154,24 @@ exports.updateBooking = asyncHandler(async (req, res, next) => {
 // why we have so many functions: https://en.wikipedia.org/wiki/Single-responsibility_principle
 getAllParts = async (partsArray) => {
   // code extracted from https://stackoverflow.com/questions/8303900/mongodb-mongoose-findmany-find-all-documents-with-ids-listed-in-array
-  return await Supply.find({
-    '_id': { $in: partsArray }
-  }, function(err, docs){
+  return await Supply.find(
+    {
+      _id: { $in: partsArray },
+    },
+    function (err, docs) {
       // console.log(docs);
-  });
+    }
+  );
 };
 
-calculatePartsPrice = async(parts) => {
-
+calculatePartsPrice = async (parts) => {
   let total = 0;
   const localParts = await getAllParts(parts);
-  localParts.forEach(part => {
+  localParts.forEach((part) => {
     total += part.productPrice;
   });
   return total;
-}
+};
 // Calculates the minimum cost for booking type
 function bookingTypeMinimumCost(bookingType) {
   let minimunCost = 0;
@@ -196,8 +196,8 @@ function bookingTypeMinimumCost(bookingType) {
   return minimunCost;
 }
 
-function getBookingWeight(bookingsType){
-  if(bookingsType == 'Major Repair'){
+function getBookingWeight(bookingsType) {
+  if (bookingsType == 'Major Repair') {
     return 2;
   }
   return 1;
@@ -205,36 +205,38 @@ function getBookingWeight(bookingsType){
 
 // Logic to limite the number of bookings per mechanic. Each mechanic could carry out AT MOST 4 services/repairs in one day. If the booking is a Major Repair then this would count double. CHECH THIS SH%#$$!!!
 
-canMechanicTakeJob = async (staffId, newBookingWeight) =>{
+canMechanicTakeJob = async (staffId, newBookingWeight) => {
   //  gets all the bookings for that staff, sums their weight together
   // if their weight > 4, staff is too busy, if not, staff can take job
   let maximumJobsADay = 4;
   let currentJobsNumber = 0;
 
-  const mechanic = await Staff.findOne({ _id : staffId });
+  const mechanic = await Staff.findOne({ _id: staffId });
   const bookings = await getBookingsById(mechanic.bookings);
 
   // console.log(bookings)
   /**/
-  bookings.forEach(booking => {
+  bookings.forEach((booking) => {
     currentJobsNumber += getBookingWeight(booking.bookingType);
   });
 
-  if((currentJobsNumber + newBookingWeight) > maximumJobsADay){
+  if (currentJobsNumber + newBookingWeight > maximumJobsADay) {
     return false;
   }
   return true;
   /**/
 };
 
-
 getBookingsById = async (bookingsId) => {
-  return await Booking.find({
-    '_id': { $in: bookingsId }
-  }, function(err, docs){
+  return await Booking.find(
+    {
+      _id: { $in: bookingsId },
+    },
+    function (err, docs) {
       // console.log(docs);
-  });
-}
+    }
+  );
+};
 // @desc  Delete single booking
 // @route DELETE /api/v1/booking/:id
 // @access Private
