@@ -42,3 +42,32 @@ exports.protect = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse('Not authorized to access this route', 401));
   }
 });
+
+exports.protectStaff = asyncHandler(async (req, res, next) => {
+  //CHECK IF PROTECT IS WORKING!!!
+  let token;
+
+  if (req.cookies.token) {
+    token = req.cookies.token;
+  }
+  // make sure token exists
+  if (!token) {
+    return next(new ErrorResponse('Not authorized to access this route', 401));
+  }
+  try {
+    //verify token. Extract from the payload
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const staff = await Staff.findById(decoded.id);
+    if(!staff){
+      return next(new ErrorResponse('Not authorized to access this route', 401));
+    }
+    req.user = staff
+    
+    console.log(req.user)
+
+    next();
+  } catch (err) {
+    return next(new ErrorResponse('Not authorized to access this route', 401));
+  }
+});

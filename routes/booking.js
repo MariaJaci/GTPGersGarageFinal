@@ -8,11 +8,11 @@ const {
 } = require('../controllers/booking');
 
 //Bring in the protect middleware function so certain routes can be protect when required
-const { protect } = require('../middleware/auth');
+const { protect, protectStaff } = require('../middleware/auth');
 
 const router = express.Router();
 
-router.route('/').get(getBookings);
+router.route('/').get(protectStaff, getBookings);
 
 router.route('/:id').get(protect, getBooking);
 router
