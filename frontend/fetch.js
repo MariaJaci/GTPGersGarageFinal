@@ -1,11 +1,11 @@
 // const { response } = require('express');
 // console.log('run from fetch.js');
 // Standart post request using fetch - Login
-document.getElementById('login').addEventListener('submitLogin', addLogin);
+document.getElementById('loginForm').addEventListener('submit', addLogin);
+document.getElementById('loginStafForm').addEventListener('submit', loginStaff);
+
 // pass in event parameter to prevent submiting to a file.
-console.log('run on fetch.js'); //FETCH IS NOT DOING ANYTHING!!!
 function addLogin(e) {
-  console.log('Coming from fetch');
   e.preventDefault();
   // get email and password values
   let email = document.getElementById('email').value;
@@ -23,6 +23,7 @@ function addLogin(e) {
   })
     .then((res) => res.json())
     .then((data) => {
+      console.log(data)
       if (data.success == true) {
         console.log('User has logged in succesfully');
         console.log(data);
@@ -33,9 +34,41 @@ function addLogin(e) {
     });
 }
 
+function loginStaff(e) {
+  console.log('Coming from fetch');
+  e.preventDefault();
+  // get email and password values
+  let email = document.getElementById('staffEmail').value;
+
+  let password = document.getElementById('staffPassword').value;
+  // call the api
+  fetch('http://localhost:5000/api/v1/staff/login', {
+    method: 'POST',
+    headers: {
+      //call the object in the headers
+      Accept: 'application/json, text/plain, */*',
+      'Content-type': 'application/json',
+    }, //wrap the data in a stringify json function
+    body: JSON.stringify({ email: email, password: password }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data)
+      if (data.success == true) {
+        console.log('User has logged in succesfully');
+        console.log(data);
+      } else {
+        console.log('Not logged in');
+        console.log(data.success);
+      }
+    });
+}
+
+
+loginStafForm
 // Standart post request using fetch - Register
 
-document.querySelector('#register').addEventListener('submitRegister', (e) => {
+document.querySelector('#register').addEventListener('submit', (e) => {
   e.preventDefault();
   let registerForm = document.querySelector('#register');
   const data = new URLSearchParams();
