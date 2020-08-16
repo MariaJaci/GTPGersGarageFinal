@@ -15,7 +15,6 @@ const BookingSchema = new mongoose.Schema({
   staffId: {
     type: mongoose.Schema.ObjectId,
     ref: 'Staff',
-    // TODO not required
   },
 
   supplies: [

@@ -6,8 +6,10 @@ ID: 2019431 */
 
 // Web framework server to create routes req and res
 const express = require('express');
+
 // Dotenv create environment variable
 const dotenv = require('dotenv');
+
 // HTTP request logger middleware for node.js
 const morgan = require('morgan');
 
@@ -37,6 +39,7 @@ const supplies = require('./routes/supplies');
 const auth = require('./routes/auth');
 const booking = require('./routes/booking');
 
+//Init express
 const app = express();
 
 // path to link both frontend and api
@@ -53,6 +56,7 @@ app.use(
 );
 // Enable use of cookies
 app.use(cookieParser());
+
 // Dev loggin middleware to show in the console
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));

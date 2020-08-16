@@ -9,6 +9,10 @@ const errorHandler = (err, req, res, next) => {
   //Log to console for dev
   console.log(err);
 
+  /*"Error Handling Middleware
+Middleware execution normally stops the first time a piece of middleware calls next() with an error. However, there is a special kind of post middleware called "error handling middleware" that executes specifically when an error occurs. Error handling middleware is useful for reporting errors and making error messages more readable.
+Error handling middleware is defined as middleware that takes one extra parameter: the 'error' that occurred as the first parameter to the function. Error handling middleware can then transform the error however you want." - https://mongoosejs.com/docs/middleware.html */
+
   // Mongoose bad objectId
   if (err.name === 'CastError') {
     const message = `Resource not found with the id of ${err.value}`;

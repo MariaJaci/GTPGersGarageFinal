@@ -15,11 +15,10 @@ const router = express.Router();
 router.route('/').get(protectStaff, getBookings);
 router.route('/').post(protect, makeBooking);
 
-router.route('/:id').get(protect, getBooking);
 router
   .route('/:id')
-  // .post(protect, makeBooking)
-  .put(protect, updateBooking)
+  .get(protect, getBooking)
+  .put(protectStaff, updateBooking)
   .delete(deleteBooking);
 
 module.exports = router;
