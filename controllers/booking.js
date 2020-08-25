@@ -86,6 +86,23 @@ exports.updateBooking = asyncHandler(async (req, res, next) => {
     // The token in cookies does not belong to a staff, so stop their changes as soon as we know
     return next(new ErrorResponse('Not authorized to access this route', 400));
   }
+  // update booking
+  const booking = await Booking.findByIdAndUpdate(req.params.id, req.body, {
+    //req.body send requests
+    new: true, //retuns only the updated booking
+    runValidators: true, // run mongoose validators on updates
+  });
+
+  if (!booking) {
+    return next(
+      new ErrorResponse(
+        `Booking not found with the id of ${req.params.id}`,
+        400
+      )
+    );
+  }
+  res.status(200).json({ success: true, data: booking });
+
   // get mechanic
   const mechanic = await Staff.findById(req.body.staffId);
   // get all bookings from that mechanic
@@ -126,23 +143,6 @@ exports.updateBooking = asyncHandler(async (req, res, next) => {
 
   // adds all costs together
   req.body.price = total + partsCost;
-
-  // update booking
-  const booking = await Booking.findByIdAndUpdate(req.params.id, req.body, {
-    //req.body send requests
-    new: true, //retuns only the updated booking
-    runValidators: true, // run mongoose validators on updates
-  });
-
-  if (!booking) {
-    return next(
-      new ErrorResponse(
-        `Booking not found with the id of ${req.params.id}`,
-        400
-      )
-    );
-  }
-  res.status(200).json({ success: true, data: booking });
 });
 
 // why we have so many functions: https://en.wikipedia.org/wiki/Single-responsibility_principle
